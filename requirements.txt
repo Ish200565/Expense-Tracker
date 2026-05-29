@@ -1,0 +1,12 @@
+flask
+flask-sqlalchemy
+# psycopg2-binary
+# flask-jwt-extended
+# bcrypt
+# flask-migrate
+# google-generativeai
+# Pillow
+# chromadb
+# sentence-transformers
+# gunicorn
+# python-dotenv

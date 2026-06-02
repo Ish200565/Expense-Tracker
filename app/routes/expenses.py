@@ -14,14 +14,25 @@ expenses= Blueprint("expenses", __name__)
 def add_expense():
     data=request.get_json()
     user_id=int(get_jwt_identity())
+    amount = data.get("amount")       
+    category = data.get("category")
 
-    if not data.get("amount") or not data.get("category"):
+
+    if amount is None or category is None:
         return jsonify({"error":"Amount and category are required "}),400
     
+    if not isinstance(amount, (int, float)):
+        return jsonify({"error":"Amount should be a number "}),400
+
+    if  amount <= 0 :
+        return jsonify({"error":"Amount must be greater than zero "}),400
+    
+    if not category.strip():
+        return jsonify({"error":"Category cannot be empty "}),400
 
     new_expense = Expense(
-        amount=data["amount"],
-        category=data["category"],
+        amount=amount,
+        category=category,
         user_id=user_id
     )
     db.session.add(new_expense)
@@ -35,8 +46,42 @@ def add_expense():
 def get_expenses():
     user_id = int(get_jwt_identity())
     expenses_list = Expense.query.filter_by(user_id=user_id).all()
+
+
     return jsonify([e.to_dict() for e in expenses_list]), 200
 
+@expenses.route("/expenses/<int:expense_id>",methods=["PATCH"])
+@jwt_required()
+def update_expenses_list(expense_id):
+    user_id=int(get_jwt_identity())
+    expense=Expense.query.filter_by(id=expense_id,user_id=user_id).first()
+   
+
+    if not expense:
+        return jsonify({"error": "Expense not found"}), 404
+    
+    data=request.get_json()
+
+    if "amount" in data:
+        amount=data["amount"]
+        if not isinstance(amount, (int, float)):
+            return jsonify({"error":"Amount should be a number "}),400
+
+        if  amount <= 0 :
+            return jsonify({"error":"Amount must be greater than zero "}),400
+    
+        expense.amount=amount
+        
+    if "category" in data:
+        category=data["category"]
+        if not category.strip():
+            return jsonify({"error": "Category cannot be empty"}), 400
+        expense.category=category
+
+
+    db.session.commit()
+
+    return jsonify({"message": "EXPENSE UPDATED", "expense": expense.to_dict()}), 200
 
 @expenses.route("/expense/<int:expense_id>",methods=["DELETE"])
 @jwt_required()
@@ -62,7 +107,11 @@ def delete_expense(expense_id):
 def get_exepenses_by_category(category):
         user_id = int(get_jwt_identity())
         expense_list=Expense.query.filter_by(user_id=user_id,category=category).all()
-
+        
+        #no expenses in that category     → return empty list, not an error
+        if not expense_list:
+            return jsonify({"expenses":[]})
+        
         return jsonify({"expenses": [e.to_dict() for e in expense_list]})
 
 #summary calculation endpoint
@@ -89,3 +138,5 @@ def expense_summary():
         else:
             breakdown[expense.category] = expense.amount
     return jsonify({"total": total, "breakdown": breakdown})  
+
+

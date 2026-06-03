@@ -8,6 +8,9 @@ __pycache__/
 
 
 .env
+venv/
+*.pyc
+chroma_db/
 
 
 # Distribution / packaging

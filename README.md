@@ -59,3 +59,20 @@ The AI Expense Tracker is a personal finance management API that allows users to
 - `GET /expenses/category/<string:category>` — Retrieve all expenses matching a specific category.
 - `GET /expenses/summary` — Retrieve an aggregated summary showing total spending and a category breakdown.
 
+### AI Receipt Scanner
+*Requires `Authorization: Bearer <token>` header. Send file as `multipart/form-data`.*
+
+- `POST /upload-receipt` — Upload a receipt photo (jpg/png). AI extracts items and amounts and saves them as expenses automatically.
+
+  **How to test in Postman:**
+```
+  Body → form-data
+  Key  → receipt (type: File)
+  Value → select your receipt photo
+```
+```
+
+---
+
+Two things added — Groq in tech stack, and the full receipt scanner section with Postman instructions.
+---

@@ -7,7 +7,12 @@ from app.services.groq_services import extract_receipt_data
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
-print("UPLOAD FOLDER PATH:", UPLOAD_FOLDER)
+ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}  
+
+def allowed_file(filename):                           # Task 1 — helper function
+    return "." in filename and \
+           filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
 receipts = Blueprint("receipts", __name__)
 
 @receipts.route("/upload-receipt", methods=["POST"])
@@ -20,11 +25,21 @@ def upload_receipt():
         return jsonify({"error": "No receipt image provided"}), 400
 
     file = request.files["receipt"]
-    print("FILENAME:", file.filename)
+    
+    if file.filename == "":                           # Task 2 — empty filename
+        return jsonify({"error": "no file selected"}), 400
+
+    if not allowed_file(file.filename):               # Task 1 — file type check
+        return jsonify({"error": "only jpg and png files allowed"}), 400
+
     file_path = os.path.join(UPLOAD_FOLDER, file.filename or "receipt.jpg")
     file.save(file_path)
 
-    receipt_data = extract_receipt_data(file_path)
+    try:                                              # Task 3 — wrap Groq call
+        receipt_data = extract_receipt_data(file_path)
+    except Exception as e:
+        os.remove(file_path)
+        return jsonify({"error": "AI processing failed", "details": str(e)}), 500
 
     saved_expenses = []
     for item in receipt_data["items"]:

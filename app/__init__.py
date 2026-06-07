@@ -19,5 +19,8 @@ def create_app():
     from app.routes.expenses import expenses
     app.register_blueprint(expenses)          
 
+    from app.routes.receipts import receipts
+    app.register_blueprint(receipts)
+
     return app
 

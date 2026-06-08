@@ -70,9 +70,3 @@ The AI Expense Tracker is a personal finance management API that allows users to
   Key  → receipt (type: File)
   Value → select your receipt photo
 ```
-```
-
----
-
-Two things added — Groq in tech stack, and the full receipt scanner section with Postman instructions.
----

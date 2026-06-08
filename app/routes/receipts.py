@@ -1,5 +1,6 @@
+# from curses import raw
 import os
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, json, request, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from app.extensions import db
 from app.models.expense import Expense
@@ -9,7 +10,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}  
 
-def allowed_file(filename):                           # Task 1 — helper function
+def allowed_file(filename):                           
     return "." in filename and \
            filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -26,16 +27,16 @@ def upload_receipt():
 
     file = request.files["receipt"]
     
-    if file.filename == "":                           # Task 2 — empty filename
+    if file.filename == "":                           #empty filename
         return jsonify({"error": "no file selected"}), 400
 
-    if not allowed_file(file.filename):               # Task 1 — file type check
+    if not allowed_file(file.filename):               # helper function
         return jsonify({"error": "only jpg and png files allowed"}), 400
 
     file_path = os.path.join(UPLOAD_FOLDER, file.filename or "receipt.jpg")
-    file.save(file_path)
+    file.save(file_path) #Prevents saving to a path with no filename.
 
-    try:                                              # Task 3 — wrap Groq call
+    try:                                              # wrap Groq call
         receipt_data = extract_receipt_data(file_path)
     except Exception as e:
         os.remove(file_path)
@@ -51,12 +52,13 @@ def upload_receipt():
         )
         db.session.add(expense)
 
-    db.session.commit()                          # commit first
+    db.session.commit()                       
+
 
     for expense in db.session.query(Expense).filter_by(user_id=user_id).order_by(Expense.id.desc()).limit(len(receipt_data["items"])).all():
-        saved_expenses.append(expense.to_dict()) # then to_dict()
+        saved_expenses.append(expense.to_dict())
 
-    os.remove(file_path)
+    # os.remove(file_path)
 
     return jsonify({
         "message": "receipt processed",

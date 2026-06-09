@@ -36,37 +36,33 @@ def upload_receipt():
     file_path = os.path.join(UPLOAD_FOLDER, file.filename or "receipt.jpg")
     file.save(file_path) #Prevents saving to a path with no filename.
 
-    try:                                              # wrap Groq call
+
+    try:
         receipt_data = extract_receipt_data(file_path)
-    except Exception as e:
-        os.remove(file_path)
-        return jsonify({"error": "AI processing failed", "details": str(e)}), 500
 
-    saved_expenses = []
-    for item in receipt_data["items"]:
-        expense = Expense(
-            user_id=user_id,
-            category=item["name"],
-            amount=item["amount"],
-            
+        saved_expenses = []
+        for item in receipt_data["items"]:
+            expense = Expense(
+                user_id=user_id,
+                category=item["name"],
+                amount=item["amount"],
+                description=f"Auto: {item['name']}"
         )
-        db.session.add(expense)
+            db.session.add(expense)
+            saved_expenses.append(item)
 
-    db.session.commit()                       
+        db.session.commit()
 
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "processing failed", "details": str(e)}), 500
 
-    for expense in db.session.query(Expense).filter_by(user_id=user_id).order_by(Expense.id.desc()).limit(len(receipt_data["items"])).all():
-        saved_expenses.append(expense.to_dict())
-
-    # os.remove(file_path)
-   
-    DEBUG_KEEP_FILES = False   # change to False before deployment
-
-    if not DEBUG_KEEP_FILES:
-        os.remove(file_path)
+    finally:
+        if os.path.exists(file_path):
+            os.remove(file_path)        # ← always runs, success or failure
 
     return jsonify({
-        "message": "receipt processed",
-        "expenses_created": len(saved_expenses),
-        "data": receipt_data
-    }), 201
+    "message": "receipt processed",
+    "expenses_created": len(saved_expenses),
+    "data": receipt_data
+}), 201

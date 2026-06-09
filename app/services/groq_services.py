@@ -3,8 +3,6 @@ from flask import current_app
 import base64
 import json
 
-def get_groq_client():
-    return Groq(api_key=current_app.config["GROQ_API_KEY"])
 
 def clean_json_response(raw):
         # Remove markdown code blocks
@@ -47,6 +45,9 @@ def validate_receipt_data(data):
             data["currency"] = "USD"
 
         return data
+
+def get_groq_client():
+    return Groq(api_key=current_app.config["GROQ_API_KEY"])
 
 def extract_receipt_data(image_path):
     client = get_groq_client()

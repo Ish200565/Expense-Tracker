@@ -46,7 +46,7 @@ def upload_receipt():
                 user_id=user_id,
                 category=item["name"],
                 amount=item["amount"],
-                description=f"Auto: {item['name']}"
+                
         )
             db.session.add(expense)
             saved_expenses.append(item)

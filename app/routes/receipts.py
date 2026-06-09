@@ -59,6 +59,11 @@ def upload_receipt():
         saved_expenses.append(expense.to_dict())
 
     # os.remove(file_path)
+   
+    DEBUG_KEEP_FILES = False   # change to False before deployment
+
+    if not DEBUG_KEEP_FILES:
+        os.remove(file_path)
 
     return jsonify({
         "message": "receipt processed",

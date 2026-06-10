@@ -62,11 +62,12 @@ The AI Expense Tracker is a personal finance management API that allows users to
 ### AI Receipt Scanner
 *Requires `Authorization: Bearer <token>` header. Send file as `multipart/form-data`.*
 
-- `POST /upload-receipt` — Upload a receipt photo (jpg/png). AI extracts items and amounts and saves them as expenses automatically.
+- `POST /upload-receipt` — Upload a receipt photo (jpg/png only).
+  AI extracts all items and amounts and saves them as expenses automatically.
 
-  **How to test in Postman:**
-```
-  Body → form-data
-  Key  → receipt (type: File)
-  Value → select your receipt photo
+  Tested receipt types: restaurant, grocery, electricity, hospital,
+  jewellery, handwritten/faulty bills.
+
+  **Postman setup:**
+  Body → form-data → Key: receipt (type: File) → select image
 ```

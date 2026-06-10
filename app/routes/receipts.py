@@ -1,4 +1,3 @@
-# from curses import raw
 import os
 from flask import Blueprint, json, request, jsonify
 from flask_jwt_extended import get_jwt_identity, jwt_required
@@ -27,14 +26,14 @@ def upload_receipt():
 
     file = request.files["receipt"]
     
-    if file.filename == "":                           #empty filename
+    if file.filename == "":                          
         return jsonify({"error": "no file selected"}), 400
 
     if not allowed_file(file.filename):               # helper function
         return jsonify({"error": "only jpg and png files allowed"}), 400
 
     file_path = os.path.join(UPLOAD_FOLDER, file.filename or "receipt.jpg")
-    file.save(file_path) #Prevents saving to a path with no filename.
+    file.save(file_path) 
 
 
     try:
@@ -59,7 +58,7 @@ def upload_receipt():
 
     finally:
         if os.path.exists(file_path):
-            os.remove(file_path)        # ← always runs, success or failure
+            os.remove(file_path)       
 
     return jsonify({
     "message": "receipt processed",

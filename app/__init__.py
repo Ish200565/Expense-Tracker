@@ -22,5 +22,8 @@ def create_app():
     from app.routes.receipts import receipts
     app.register_blueprint(receipts)
 
+    from app.routes.insights import insights
+    app.register_blueprint(insights)
+
     return app
 

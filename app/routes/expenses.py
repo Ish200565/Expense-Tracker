@@ -40,6 +40,9 @@ def add_expense():
     db.session.add(new_expense)
     db.session.commit()
 
+    from app.services.rag_service import store_expense
+    store_expense(new_expense)
+    
     return jsonify({"message": "expense added", "expense": new_expense.to_dict()}), 201
 
 @expenses.route("/expenses/<int:expense_id>", methods=["PATCH"])

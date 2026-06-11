@@ -52,6 +52,10 @@ def upload_receipt():
 
         db.session.commit()
 
+        from app.services.rag_service import store_expense
+        for expense in saved_expenses:
+            store_expense(expense)
+
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "processing failed", "details": str(e)}), 500

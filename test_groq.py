@@ -1,9 +1,11 @@
+from flask import app
 from groq import Groq
 from dotenv import load_dotenv
 import os
 import base64
 import json
 from app.services.groq_services import clean_json_response, validate_receipt_data
+from app.services.embedding_service import get_embedding
 
 load_dotenv()
 
@@ -57,3 +59,14 @@ print(json.loads(clean_json_response(raw3)))
 print(f"Total: {parsed['total']} {parsed['currency']}")
 for item in parsed['items']:
     print(f"  - {item['name']}: {item['amount']}")
+
+
+embedding = get_embedding("lunch at restaurant")
+print("Embedding length:", len(embedding))
+print("First 5 values:", embedding[:5])
+
+
+
+from app.services.rag_service import search_expenses
+results = search_expenses("food restaurant", user_id=3, n_results=3)
+print(results)

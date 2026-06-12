@@ -68,5 +68,5 @@ print("First 5 values:", embedding[:5])
 
 
 from app.services.rag_service import search_expenses
-results = search_expenses("food restaurant", user_id=3, n_results=3)
-print(results)
+results = search_expenses("food ", user_id=5, n_results=3)
+print(results["documents"])

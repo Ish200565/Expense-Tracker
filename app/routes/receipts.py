@@ -47,6 +47,7 @@ def upload_receipt():
                 amount=item["amount"],
                 description="Added from receipt upload"
                 
+                
         )
             db.session.add(expense)
             saved_expenses.append(item)

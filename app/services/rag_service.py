@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import chromadb
 import os
 
@@ -28,11 +30,34 @@ def store_expense(expense):
         }]
     )
 
-def search_expenses(query, user_id, n_results=5):
+def search_expenses(query, user_id, n_results=5, days=90):
+    from datetime import datetime, timedelta
+    cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
+    
     embedding = get_embedding(query)
     results = collection.query(
         query_embeddings=[embedding],
         n_results=n_results,
-        where={"user_id": str(user_id)}
+        where={
+            "$and": [
+                {"user_id": {"$eq": str(user_id)}},
+                {"date": {"$gte": cutoff}}
+            ]
+        }
     )
     return results
+
+def update_expense_embedding(expense):
+    # delete old embedding
+    try:
+        collection.delete(ids=[str(expense.id)])
+    except:
+        pass
+    # store new one
+    store_expense(expense)
+
+def delete_expense_embedding(expense_id):
+    try:
+        collection.delete(ids=[str(expense_id)])
+    except Exception as e:
+        print(f"ChromaDB delete failed: {e}")

@@ -72,7 +72,13 @@ def update_expenses_list(expense_id):
             return jsonify({"error": "Category cannot be empty"}), 400
         expense.category = category
 
+    if "description" in data:
+        expense.description = data["description"]
+
     db.session.commit()
+
+    from app.services.rag_service import update_expense_embedding
+    update_expense_embedding(expense)
 
     return jsonify({"message": "EXPENSE UPDATED", "expense": expense.to_dict()}), 200
 
@@ -87,6 +93,9 @@ def delete_expense(expense_id):
 
     db.session.delete(expense)
     db.session.commit()
+
+    from app.services.rag_service import delete_expense_embedding
+    delete_expense_embedding(expense_id)
 
     return jsonify({"message": "expense deleted"}), 200
 

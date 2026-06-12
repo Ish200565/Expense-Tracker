@@ -53,8 +53,14 @@ def ask_question():
         return jsonify({"error": "question is required"}), 400
 
     question = data["question"]
+
     comparison_keywords = ["compare", "vs", "versus", "difference", "more than", "less than"]
-    n_results = 10 if any(word in question.lower() for word in comparison_keywords) else 5
+    if any(w in question.lower() for w in ["all", "total", "every", "breakdown", "summary"]):
+        n_results = 15
+    elif any(w in question.lower() for w in ["compare", "vs", "difference"]):
+        n_results = 10
+    else:
+         n_results = 5
 
     results = search_expenses(question, user_id=user_id, n_results=n_results)
 
@@ -71,7 +77,13 @@ def ask_question():
                 "role": "user",
                 "content": f"""You are a personal finance assistant.
 Answer this question based on the expense data provided.
-Be specific with amounts and dates. Keep answer under 3 sentences.
+ Rules:
+- Always add up amounts before answering totals
+- If data seems incomplete say so
+- Use the currency from the data
+- Be specific — mention exact amounts and categories
+- If asked to compare, calculate each category separately first
+- Keep answer under 3 sentences.
 
 Expense data:
 {context}

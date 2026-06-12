@@ -13,7 +13,7 @@ collection=client.get_or_create_collection(name="expenses")
 
 
 def store_expense(expense):
-    content=f"{expense.category} amount {expense.amount} "
+    content=f"{expense.category} {expense.description}  amount {expense.amount} "
     embedding = get_embedding(content)
     collection.add(
         ids=[str(expense.id)],
@@ -23,6 +23,7 @@ def store_expense(expense):
             "user_id": str(expense.user_id),
             "amount": expense.amount,
             "category": expense.category,
+            "description": expense.description,
             "date": str(expense.date)
         }]
     )

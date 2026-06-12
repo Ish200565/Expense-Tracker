@@ -45,13 +45,18 @@ Expenses:
 def ask_question():
     user_id = int(get_jwt_identity())
     data = request.get_json()
+    expense_count = Expense.query.filter_by(user_id=user_id).count()
+    if expense_count == 0:
+        return jsonify({"error": "no expenses found. add some expenses first"}), 404
 
     if not data.get("question"):
         return jsonify({"error": "question is required"}), 400
 
     question = data["question"]
+    comparison_keywords = ["compare", "vs", "versus", "difference", "more than", "less than"]
+    n_results = 10 if any(word in question.lower() for word in comparison_keywords) else 5
 
-    results = search_expenses(question, user_id=user_id, n_results=5)
+    results = search_expenses(question, user_id=user_id, n_results=n_results)
 
     if not results["documents"][0]:
         return jsonify({"error": "no relevant expenses found"}), 404

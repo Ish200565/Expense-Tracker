@@ -22,6 +22,7 @@ def add_expense():
     user_id = int(get_jwt_identity())
     amount = data.get("amount")       
     category = data.get("category")
+    description = data.get("description", "")
 
     if amount is None or category is None:
         return jsonify({"error": "Amount and category are required"}), 400
@@ -35,7 +36,9 @@ def add_expense():
     new_expense = Expense(
         amount=amount,
         category=category,
+        description=description,
         user_id=user_id
+        
     )
     db.session.add(new_expense)
     db.session.commit()

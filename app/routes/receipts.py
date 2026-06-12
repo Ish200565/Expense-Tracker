@@ -45,6 +45,7 @@ def upload_receipt():
                 user_id=user_id,
                 category=item["name"],
                 amount=item["amount"],
+                description="Added from receipt upload"
                 
         )
             db.session.add(expense)

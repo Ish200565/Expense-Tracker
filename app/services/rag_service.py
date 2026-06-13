@@ -15,7 +15,7 @@ collection=client.get_or_create_collection(name="expenses")
 
 
 def store_expense(expense):
-    content=f"{expense.category} {expense.description}  amount {expense.amount} "
+    content=f"{expense.category} {expense.description}  amount {expense.amount} date:{expense.date.strftime('%B %Y')}"
     embedding = get_embedding(content)
     collection.add(
         ids=[str(expense.id)],

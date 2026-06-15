@@ -38,12 +38,7 @@ def search_expenses(query, user_id, n_results=5, days=90):
     results = collection.query(
         query_embeddings=[embedding],
         n_results=n_results,
-        where={
-            "$and": [
-                {"user_id": {"$eq": str(user_id)}},
-                {"date": {"$gte": cutoff}}
-            ]
-        }
+         where={"user_id": str(user_id)}
     )
     return results
 

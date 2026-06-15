@@ -12,13 +12,15 @@ auth = Blueprint("auth", __name__)
 def register():
     data = request.get_json()
 
+    if not data:
+        return jsonify({"error": "request body must be JSON"}), 400
     if not data.get("email") or not data.get("password"):
         return jsonify({"error": "email and password required"}), 400
     if User.query.filter_by(email=data["email"]).first():
         return jsonify({"error": "email already exists"}), 400
 
     hashed = bcrypt.hashpw(
-        data["password"].encode("utf-8"), 
+        data["password"].encode("utf-8"),
         bcrypt.gensalt()
     )
     user = User(email=data["email"], password=hashed.decode("utf-8"))
@@ -32,20 +34,16 @@ def register():
 def login():
     data = request.get_json()
 
+    if not data:
+        return jsonify({"error": "request body must be JSON"}), 400
+    if not data.get("email") or not data.get("password"):
+        return jsonify({"error": "email and password required"}), 400
+
     user = User.query.filter_by(email=data["email"]).first()
     if not user:
         return jsonify({"error": "invalid email or password"}), 401
     if not bcrypt.checkpw(data["password"].encode("utf-8"), user.password.encode("utf-8")):
         return jsonify({"error": "invalid email or password"}), 401
-    
+
     token = create_access_token(identity=str(user.id))
-
-    if not data:                       
-        return jsonify({"error": "request body must be JSON"}), 400
-
-    if not data.get("email") or not data.get("password"):
-        return jsonify({"error": "email and password required"}), 400
-    
     return jsonify({"access_token": token}), 200
-
-#The key thing here is Blueprint. This is how Flask organises routes across multiple files.

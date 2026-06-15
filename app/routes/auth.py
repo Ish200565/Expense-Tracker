@@ -40,6 +40,12 @@ def login():
     
     token = create_access_token(identity=str(user.id))
 
+    if not data:                       
+        return jsonify({"error": "request body must be JSON"}), 400
+
+    if not data.get("email") or not data.get("password"):
+        return jsonify({"error": "email and password required"}), 400
+    
     return jsonify({"access_token": token}), 200
 
 #The key thing here is Blueprint. This is how Flask organises routes across multiple files.

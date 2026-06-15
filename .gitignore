@@ -11,6 +11,10 @@ __pycache__/
 venv/
 *.pyc
 chroma_db/
+migrate_to_chroma.py
+test_groq.py
+uploads/*
+!uploads/.gitkeep
 
 
 # Distribution / packaging

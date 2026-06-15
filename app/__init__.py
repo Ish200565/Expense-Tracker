@@ -4,7 +4,7 @@ from .config import Config
 
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)           #loading the config file
+    app.config.from_object(Config)           
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -13,8 +13,8 @@ def create_app():
     from app.models.user import User
     from app.models.expense import Expense 
 
-    from app.routes.auth import auth          #blueprint that connects routes with init 
-    app.register_blueprint(auth)              #registering the blueprint with the app
+    from app.routes.auth import auth         
+    app.register_blueprint(auth)              
 
     from app.routes.expenses import expenses
     app.register_blueprint(expenses)          

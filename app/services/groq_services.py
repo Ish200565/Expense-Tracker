@@ -5,13 +5,13 @@ import json
 
 
 def clean_json_response(raw):
-        # Remove markdown code blocks
+      
         if "```json" in raw:
             raw = raw.split("```json")[1].split("```")[0].strip()
         elif "```" in raw:
             raw = raw.split("```")[1].split("```")[0].strip()
 
-        # Find JSON object if mixed with text
+        
         start = raw.find("{")
         end = raw.rfind("}") + 1
         if start != -1 and end != 0:

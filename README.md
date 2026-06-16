@@ -1,6 +1,9 @@
 # AI Expense Tracker
 A REST API for tracking personal expenses with JWT authentication and AI-powered receipt scanning.
 
+
+**Live API:** `https://ai-expense-tracker-fgcf.onrender.com`
+
 ## What it does
 The AI Expense Tracker is a personal finance management API that allows users to register, log in securely using JWT authentication, and keep track of their expenses. Users can add, modify, delete, and categorize their spending, as well as retrieve expense summaries to gain insights into their financial habits.
 
@@ -71,3 +74,15 @@ The AI Expense Tracker is a personal finance management API that allows users to
   **Postman setup:**
   Body → form-data → Key: receipt (type: File) → select image
 ```
+### AI Insights
+*All routes require Bearer token.*
+
+- `GET /summary` — AI analyses all your expenses and returns a friendly 3-4 sentence summary with spending insights and a money saving tip.
+- `POST /ask` — Ask a natural language question about your expenses.
+```json
+  { "question": "how much did I spend on food?" }
+```
+  Powered by ChromaDB semantic search + Groq LLM. Returns a specific answer based on your actual expense data.
+
+## Deployment
+Deployed on Render with PostgreSQL. Auto-deploys on every push to main branch.

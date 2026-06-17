@@ -1,41 +1,63 @@
 # AI Expense Tracker
 A REST API for tracking personal expenses with JWT authentication and AI-powered receipt scanning.
 
-
+**Live demo:** `https://ish200565.github.io/Expense-Tracker`
 **Live API:** `https://ai-expense-tracker-fgcf.onrender.com`
 
 ## What it does
 The AI Expense Tracker is a personal finance management API that allows users to register, log in securely using JWT authentication, and keep track of their expenses. Users can add, modify, delete, and categorize their spending, as well as retrieve expense summaries to gain insights into their financial habits.
 
 ## Tech stack
-- Python, Flask
+
+**Backend**
+- Python, Flask, Gunicorn
 - PostgreSQL, SQLAlchemy, Flask-Migrate
-- Flask-JWT-Extended, bcrypt
-- python-dotenv
+- Flask-JWT-Extended, bcrypt, Flask-CORS
+
+**AI**
+- Groq LLM — llama-4-scout vision model for receipt scanning and NLP queries
+- ChromaDB — vector database for semantic expense search
+- fastembed — lightweight local text embeddings
+
+**Frontend**
+- Vanilla HTML, CSS, JavaScript — single page, no framework
+- Deployed on GitHub Pages
+
+**Infrastructure**
+- API deployed on Render
+- Database on Render PostgreSQL
+- Frontend on GitHub Pages
 
 ## How to run locally
-1. **Navigate to the project directory:**
-   ```bash
+
+1. **Clone the repository:**
+```bash
+   git clone https://github.com/ish200565/Expense-Tracker.git
    cd Expense-Tracker
-   ```
+```
+
 2. **Create and activate a virtual environment:**
-   ```bash
+```bash
    python -m venv venv
-   # On Windows:
+   # Windows:
    venv\Scripts\activate
-   # On macOS/Linux:
+   # Mac/Linux:
    source venv/bin/activate
-   ```
+```
+
 3. **Install dependencies:**
-   ```bash
+```bash
    pip install -r requirements.txt
-   ```
-4. **Configure environment variables:**
-   Create a `.env` file in the root folder with the following variables:
-   ```env
+```
+
+4. **Create a `.env` file in the root folder:**
+```env
    SQLALCHEMY_DATABASE_URI=postgresql://username:password@localhost:5432/expense_tracker
-   JWT_SECRET_KEY=your_super_secret_key_here
-   ```
+   JWT_SECRET_KEY=your_secret_key_min_32_characters
+   GROQ_API_KEY=your_groq_api_key
+   DEBUG_KEEP_FILES=false
+```
+
 5. **Run database migrations:**
    ```bash
    flask db upgrade
@@ -44,6 +66,10 @@ The AI Expense Tracker is a personal finance management API that allows users to
    ```bash
    python run.py
    ```
+
+7. **Open `index.html` in your browser to use the frontend.**
+
+---
 
 ## API endpoints
 
@@ -86,3 +112,7 @@ The AI Expense Tracker is a personal finance management API that allows users to
 
 ## Deployment
 Deployed on Render with PostgreSQL. Auto-deploys on every push to main branch.
+
+## Note on free tier
+
+The API is hosted on Render's free tier which sleeps after 15 minutes of inactivity. The first request after sleep may take 30-50 seconds to respond. Subsequent requests are fast.

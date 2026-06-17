@@ -24,14 +24,13 @@
     --text-muted: #999999;
     --red: #d64545;
     --red-bg: #fef2f2;
-    --blue: #2563eb;
-    --blue-bg: #eff6ff;
     --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --radius: 10px;
     --radius-sm: 6px;
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --sidebar-w: 240px;
   }
 
   body {
@@ -44,66 +43,175 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ── AUTH SCREEN ────────────────────────────────── */
+  /* ────────────────────────────────────────────────── */
+  /*  AUTH SCREEN — split layout                        */
+  /* ────────────────────────────────────────────────── */
 
   #auth-screen {
     min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Left hero */
+  .auth-hero {
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 64px 56px;
+    border-right: 1px solid var(--border);
+  }
+
+  .auth-hero-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+
+  .auth-hero-logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--green);
+    border-radius: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 24px;
+  }
+
+  .auth-hero-logo-icon svg {
+    width: 17px; height: 17px;
+    fill: none; stroke: #fff; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .auth-hero-logo span {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .auth-hero h2 {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 16px;
+    max-width: 420px;
+  }
+
+  .auth-hero p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 380px;
+    margin-bottom: 48px;
+  }
+
+  .hero-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 440px;
+  }
+
+  .hero-feature {
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .hero-feature-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--green-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  .hero-feature-icon svg {
+    width: 18px; height: 18px;
+    fill: none; stroke: var(--green); stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .hero-feature h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .hero-feature p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 0;
+    line-height: 1.4;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 40px;
+  }
+
+  .hero-stat-num {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: -0.02em;
+  }
+
+  .hero-stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* Right login card */
+  .auth-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
     background: var(--bg);
   }
 
   .auth-card {
     width: 100%;
-    max-width: 400px;
+    max-width: 380px;
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 40px 32px 36px;
+    padding: 36px 32px 32px;
     box-shadow: var(--shadow-md);
   }
 
-  .auth-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-
-  .auth-logo-icon {
-    width: 36px;
-    height: 36px;
-    background: var(--green);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .auth-logo-icon svg {
-    width: 20px;
-    height: 20px;
-    fill: none;
-    stroke: #fff;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .auth-logo h1 {
-    font-size: 18px;
+  .auth-card-heading {
+    font-size: 20px;
     font-weight: 700;
     color: var(--text);
+    margin-bottom: 4px;
     letter-spacing: -0.02em;
+  }
+
+  .auth-card-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
   }
 
   .auth-tabs {
     display: flex;
     border-bottom: 1px solid var(--border);
     margin-bottom: 24px;
-    gap: 0;
   }
 
   .auth-tab {
@@ -116,7 +224,7 @@
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
+    transition: color 0.15s;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
   }
@@ -126,9 +234,7 @@
     border-bottom-color: var(--green);
   }
 
-  .auth-tab:hover:not(.active) {
-    color: var(--text-secondary);
-  }
+  .auth-tab:hover:not(.active) { color: var(--text-secondary); }
 
   .form-group { margin-bottom: 16px; }
 
@@ -162,7 +268,7 @@
 
   input:focus, select:focus, textarea:focus {
     border-color: var(--green);
-    box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.08);
+    box-shadow: 0 0 0 3px rgba(45,106,79,0.08);
   }
 
   select { cursor: pointer; }
@@ -177,37 +283,16 @@
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.15s, box-shadow 0.15s;
+    transition: background 0.15s;
   }
 
-  .btn-primary {
-    background: var(--green);
-    color: #fff;
-  }
-
+  .btn-primary { background: var(--green); color: #fff; }
   .btn-primary:hover { background: var(--green-hover); }
 
-  .btn-secondary {
-    background: var(--white);
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-
+  .btn-secondary { background: var(--white); color: var(--text); border: 1px solid var(--border); }
   .btn-secondary:hover { background: var(--bg); }
 
-  .btn-danger {
-    background: transparent;
-    color: var(--red);
-    border: 1px solid var(--red);
-  }
-
-  .btn-danger:hover { background: var(--red-bg); }
-
-  .btn-green {
-    background: var(--green);
-    color: #fff;
-  }
-
+  .btn-green { background: var(--green); color: #fff; }
   .btn-green:hover { background: var(--green-hover); }
 
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -219,7 +304,9 @@
     color: var(--text-muted);
   }
 
-  /* ── TOAST ──────────────────────────────────────── */
+  /* ────────────────────────────────────────────────── */
+  /*  TOAST                                             */
+  /* ────────────────────────────────────────────────── */
 
   .toast {
     position: fixed;
@@ -242,15 +329,185 @@
   .toast.error { background: var(--red); color: #fff; }
   .toast.info { background: var(--text); color: #fff; }
 
-  /* ── DASHBOARD ──────────────────────────────────── */
+  /* ────────────────────────────────────────────────── */
+  /*  DASHBOARD — sidebar layout                        */
+  /* ────────────────────────────────────────────────── */
 
   #dashboard-screen { display: none; min-height: 100vh; }
 
-  .topbar {
+  .app-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-w);
+    z-index: 20;
+  }
+
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-logo-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--green);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .sidebar-logo-icon svg {
+    width: 15px; height: 15px;
+    fill: none; stroke: #fff; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .sidebar-logo span {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .sidebar-nav {
+    flex: 1;
+    padding: 12px 10px;
+    overflow-y: auto;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 12px 12px 6px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.12s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font);
+  }
+
+  .nav-item:hover { background: var(--bg); color: var(--text); }
+
+  .nav-item.active {
+    background: var(--green-bg);
+    color: var(--green);
+  }
+
+  .nav-item svg {
+    width: 18px; height: 18px;
+    fill: none; stroke: currentColor; stroke-width: 1.8;
+    stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .sidebar-footer {
+    border-top: 1px solid var(--border);
+    padding: 14px 16px;
+  }
+
+  .sidebar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-avatar {
+    width: 32px;
+    height: 32px;
+    background: var(--green-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green);
+    flex-shrink: 0;
+  }
+
+  .sidebar-user-info { flex: 1; min-width: 0; }
+
+  .sidebar-user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sidebar-user-email {
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sidebar-logout {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 0;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font);
+  }
+
+  .sidebar-logout:hover { border-color: var(--red); color: var(--red); }
+
+  /* Main panel */
+  .main-panel {
+    margin-left: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--bg);
+  }
+
+  .panel-topbar {
     background: var(--white);
     border-bottom: 1px solid var(--border);
     padding: 0 32px;
-    height: 56px;
+    height: 54px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -259,89 +516,30 @@
     z-index: 10;
   }
 
-  .topbar-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px;
-    font-weight: 700;
+  .panel-topbar h2 {
+    font-size: 16px;
+    font-weight: 600;
     color: var(--text);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
 
-  .topbar-logo-icon {
-    width: 28px;
-    height: 28px;
-    background: var(--green);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .panel-topbar-right {
+    font-size: 12px;
+    color: var(--text-muted);
   }
 
-  .topbar-logo-icon svg {
-    width: 16px;
-    height: 16px;
-    fill: none;
-    stroke: #fff;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  .panel-content {
+    padding: 28px 32px;
+    max-width: 900px;
   }
 
-  .topbar-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  /* Sections — only one visible at a time */
+  .section { display: none; }
+  .section.active { display: block; }
 
-  .user-badge {
-    font-size: 13px;
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-
-  .logout-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text-secondary);
-    font-size: 13px;
-    font-weight: 500;
-    padding: 5px 14px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-family: var(--font);
-  }
-
-  .logout-btn:hover { border-color: var(--red); color: var(--red); }
-
-  .main-content {
-    max-width: 1040px;
-    margin: 0 auto;
-    padding: 28px 24px;
-  }
-
-  /* ── PAGE HEADER ────────────────────────────────── */
-
-  .page-header {
-    margin-bottom: 24px;
-  }
-
-  .page-header h2 {
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.02em;
-  }
-
-  .page-header p {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-top: 2px;
-  }
-
-  /* ── STATS ──────────────────────────────────────── */
+  /* ────────────────────────────────────────────────── */
+  /*  DASHBOARD SECTION                                 */
+  /* ────────────────────────────────────────────────── */
 
   .stats-row {
     display: grid;
@@ -375,15 +573,6 @@
 
   .stat-value.green { color: var(--green); }
 
-  /* ── GRID ───────────────────────────────────────── */
-
-  .grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-
   .card {
     background: var(--white);
     border: 1px solid var(--border);
@@ -391,6 +580,8 @@
     padding: 22px 24px;
     box-shadow: var(--shadow-sm);
   }
+
+  .card + .card { margin-top: 16px; }
 
   .card-title {
     font-size: 15px;
@@ -400,95 +591,15 @@
     letter-spacing: -0.01em;
   }
 
-  /* ── FORM ───────────────────────────────────────── */
-
-  .form-row {
+  .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 16px;
   }
 
-  /* ── UPLOAD ─────────────────────────────────────── */
+  .grid-2 .card + .card { margin-top: 0; }
 
-  .upload-zone {
-    border: 1.5px dashed var(--border);
-    border-radius: var(--radius-sm);
-    padding: 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.15s;
-    margin-bottom: 12px;
-    position: relative;
-    background: var(--bg);
-  }
-
-  .upload-zone:hover { border-color: var(--green); background: var(--green-bg); }
-  .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-
-  .upload-icon {
-    width: 36px;
-    height: 36px;
-    margin: 0 auto 8px;
-    background: var(--green-light);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .upload-icon svg {
-    width: 18px;
-    height: 18px;
-    stroke: var(--green);
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .upload-text {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-  }
-
-  .upload-text strong { color: var(--green); font-weight: 500; }
-
-  /* ── ASK AI ─────────────────────────────────────── */
-
-  .ask-input-row {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-
-  .ask-input-row input { flex: 1; }
-  .ask-input-row button { width: auto; padding: 9px 20px; white-space: nowrap; }
-
-  .ai-answer {
-    background: var(--bg);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-sm);
-    padding: 14px 16px;
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.6;
-    min-height: 48px;
-    display: none;
-  }
-
-  .ai-answer.visible { display: block; }
-
-  .ai-answer-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--green);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 6px;
-  }
-
-  /* ── BREAKDOWN ──────────────────────────────────── */
+  /* ── Breakdown ──────────────────────────────────── */
 
   .breakdown-list { display: flex; flex-direction: column; gap: 10px; }
 
@@ -530,9 +641,154 @@
     flex-shrink: 0;
   }
 
-  /* ── EXPENSES LIST ──────────────────────────────── */
+  /* ────────────────────────────────────────────────── */
+  /*  ADD EXPENSE SECTION                               */
+  /* ────────────────────────────────────────────────── */
 
-  .expenses-card { margin-bottom: 16px; }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  /* ────────────────────────────────────────────────── */
+  /*  RECEIPT SECTION                                   */
+  /* ────────────────────────────────────────────────── */
+
+  .upload-zone {
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-sm);
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 12px;
+    position: relative;
+    background: var(--bg);
+  }
+
+  .upload-zone:hover { border-color: var(--green); background: var(--green-bg); }
+  .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+  .upload-icon {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 8px;
+    background: var(--green-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .upload-icon svg {
+    width: 18px; height: 18px;
+    stroke: var(--green); fill: none; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+
+  .upload-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .upload-text strong { color: var(--green); font-weight: 500; }
+
+  .file-preview {
+    font-size: 12px;
+    color: var(--green);
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: none;
+  }
+
+  .receipt-result {
+    background: var(--green-bg);
+    border: 1px solid var(--green-light);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin-top: 12px;
+    display: none;
+  }
+
+  .receipt-result.visible { display: block; }
+
+  .receipt-result-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+
+  .receipt-item-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .receipt-item-row:last-child {
+    border-bottom: none;
+    font-weight: 600;
+    color: var(--text);
+    padding-top: 6px;
+    margin-top: 2px;
+  }
+
+  /* ────────────────────────────────────────────────── */
+  /*  ASK AI SECTION                                    */
+  /* ────────────────────────────────────────────────── */
+
+  .ask-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .ask-input-row input { flex: 1; }
+  .ask-input-row button { width: auto; padding: 9px 20px; white-space: nowrap; }
+
+  .ai-answer {
+    background: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 48px;
+    display: none;
+  }
+
+  .ai-answer.visible { display: block; }
+
+  .ai-answer-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+
+  .summary-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  /* ────────────────────────────────────────────────── */
+  /*  EXPENSES SECTION                                  */
+  /* ────────────────────────────────────────────────── */
 
   .table-header {
     display: flex;
@@ -607,13 +863,9 @@
   .delete-btn:hover { color: var(--red); background: var(--red-bg); }
 
   .delete-btn svg {
-    width: 14px;
-    height: 14px;
-    stroke: currentColor;
-    fill: none;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    width: 14px; height: 14px;
+    stroke: currentColor; fill: none; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round;
   }
 
   .empty-state {
@@ -623,15 +875,7 @@
     font-size: 13px;
   }
 
-  /* ── SUMMARY ────────────────────────────────────── */
-
-  .summary-text {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.7;
-  }
-
-  /* ── LOADING SPINNER ────────────────────────────── */
+  /* ── Loading ────────────────────────────────────── */
 
   .loading {
     display: inline-block;
@@ -647,225 +891,311 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── RECEIPT RESULT ─────────────────────────────── */
+  /* ── Responsive ─────────────────────────────────── */
 
-  .receipt-result {
-    background: var(--green-bg);
-    border: 1px solid var(--green-light);
-    border-radius: var(--radius-sm);
-    padding: 14px 16px;
-    margin-top: 12px;
-    display: none;
+  @media (max-width: 900px) {
+    #auth-screen { grid-template-columns: 1fr; }
+    .auth-hero { display: none; }
+    .auth-right { min-height: 100vh; }
   }
-
-  .receipt-result.visible { display: block; }
-
-  .receipt-result-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--green);
-    margin-bottom: 8px;
-  }
-
-  .receipt-item-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 13px;
-    color: var(--text-secondary);
-    padding: 4px 0;
-    border-bottom: 1px solid var(--border-light);
-  }
-
-  .receipt-item-row:last-child {
-    border-bottom: none;
-    font-weight: 600;
-    color: var(--text);
-    padding-top: 6px;
-    margin-top: 2px;
-  }
-
-  /* ── FILE PREVIEW ───────────────────────────────── */
-
-  .file-preview {
-    font-size: 12px;
-    color: var(--green);
-    font-weight: 500;
-    margin-bottom: 10px;
-    display: none;
-  }
-
-  /* ── RESPONSIVE ─────────────────────────────────── */
 
   @media (max-width: 768px) {
+    .app-layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .main-panel { margin-left: 0; }
     .stats-row { grid-template-columns: 1fr; }
     .grid-2 { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
-    .topbar { padding: 0 16px; }
-    .main-content { padding: 20px 16px; }
+    .panel-content { padding: 20px 16px; }
   }
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  AUTH SCREEN                                       -->
+<!-- ═══════════════════════════════════════════════════ -->
+
 <div id="auth-screen">
-  <div class="auth-card">
-    <div class="auth-logo">
-      <div class="auth-logo-icon">
+
+  <!-- Left hero panel -->
+  <div class="auth-hero">
+    <div class="auth-hero-logo">
+      <div class="auth-hero-logo-icon">
         <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       </div>
-      <h1>Expense Tracker</h1>
+      <span>Expense Tracker</span>
     </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Sign in</button>
-      <button class="auth-tab" onclick="switchTab('register')">Create account</button>
+
+    <h2>Track spending,<br>not spreadsheets.</h2>
+    <p>AI-powered expense tracking that gives you clarity and control over your money, effortlessly.</p>
+
+    <div class="hero-features">
+      <div class="hero-feature">
+        <div class="hero-feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <h4>Scan receipts</h4>
+        <p>Upload a photo and let AI extract every line item automatically.</p>
+      </div>
+      <div class="hero-feature">
+        <div class="hero-feature-icon">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h4>Ask AI anything</h4>
+        <p>Natural language queries about your spending habits and trends.</p>
+      </div>
+      <div class="hero-feature">
+        <div class="hero-feature-icon">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h4>Visual breakdown</h4>
+        <p>See exactly where your money goes with clear category charts.</p>
+      </div>
+      <div class="hero-feature">
+        <div class="hero-feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h4>AI summaries</h4>
+        <p>Get intelligent spending analysis and actionable insights.</p>
+      </div>
     </div>
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" id="auth-email" placeholder="you@example.com">
+
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">100%</div>
+        <div class="hero-stat-label">Private and secure</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">Instant</div>
+        <div class="hero-stat-label">AI-powered analysis</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">Free</div>
+        <div class="hero-stat-label">No hidden costs</div>
+      </div>
     </div>
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" id="auth-password" placeholder="Enter your password">
+  </div>
+
+  <!-- Right login panel -->
+  <div class="auth-right">
+    <div class="auth-card">
+      <div class="auth-card-heading">Welcome back</div>
+      <div class="auth-card-sub">Sign in to your account to continue.</div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">Sign in</button>
+        <button class="auth-tab" onclick="switchTab('register')">Create account</button>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="auth-email" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="auth-password" placeholder="Enter your password">
+      </div>
+      <button class="btn btn-primary" id="auth-btn" onclick="handleAuth()">Sign in</button>
+      <p class="auth-footer">Powered by Groq AI, ChromaDB, and Flask</p>
     </div>
-    <button class="btn btn-primary" id="auth-btn" onclick="handleAuth()">Sign in</button>
-    <p class="auth-footer">Powered by Groq AI, ChromaDB, and Flask</p>
   </div>
 </div>
 
-<!-- DASHBOARD SCREEN -->
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  DASHBOARD SCREEN                                  -->
+<!-- ═══════════════════════════════════════════════════ -->
+
 <div id="dashboard-screen">
-  <div class="topbar">
-    <div class="topbar-logo">
-      <div class="topbar-logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <span>Expense Tracker</span>
       </div>
-      Expense Tracker
-    </div>
-    <div class="topbar-right">
-      <span class="user-badge" id="user-badge">user</span>
-      <button class="logout-btn" onclick="logout()">Sign out</button>
-    </div>
-  </div>
 
-  <div class="main-content">
+      <div class="sidebar-nav">
+        <div class="nav-section-label">Menu</div>
 
-    <div class="page-header">
-      <h2>Dashboard</h2>
-      <p>Track your spending and get AI-powered insights.</p>
-    </div>
+        <button class="nav-item active" onclick="navigateTo('overview')" data-nav="overview">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
 
-    <!-- STATS -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-label">Total spent</div>
-        <div class="stat-value" id="stat-total">&mdash;</div>
+        <button class="nav-item" onclick="navigateTo('add-expense')" data-nav="add-expense">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Expense
+        </button>
+
+        <button class="nav-item" onclick="navigateTo('receipt')" data-nav="receipt">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Scan Receipt
+        </button>
+
+        <div class="nav-section-label">Intelligence</div>
+
+        <button class="nav-item" onclick="navigateTo('ask-ai')" data-nav="ask-ai">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Ask AI
+        </button>
+
+        <button class="nav-item" onclick="navigateTo('summary')" data-nav="summary">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          AI Summary
+        </button>
+
+        <div class="nav-section-label">Records</div>
+
+        <button class="nav-item" onclick="navigateTo('expenses')" data-nav="expenses">
+          <svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          All Expenses
+        </button>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Expenses logged</div>
-        <div class="stat-value" id="stat-count">&mdash;</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Top category</div>
-        <div class="stat-value green" id="stat-top">&mdash;</div>
-      </div>
-    </div>
 
-    <!-- ROW 1: Add expense + Upload receipt -->
-    <div class="grid-2">
-
-      <div class="card">
-        <div class="card-title">Add expense</div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Amount</label>
-            <input type="number" id="exp-amount" placeholder="0.00" min="0">
-          </div>
-          <div class="form-group">
-            <label>Category</label>
-            <select id="exp-category">
-              <option value="">Select category</option>
-              <option value="food">Food</option>
-              <option value="travel">Travel</option>
-              <option value="bills">Bills</option>
-              <option value="shopping">Shopping</option>
-              <option value="health">Health</option>
-              <option value="entertainment">Entertainment</option>
-              <option value="other">Other</option>
-            </select>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="sidebar-avatar">U</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="sidebar-user-name">User</div>
+            <div class="sidebar-user-email" id="sidebar-user-email">user@email.com</div>
           </div>
         </div>
-        <div class="form-group">
-          <label>Description</label>
-          <input type="text" id="exp-desc" placeholder="e.g. Lunch at cafe">
-        </div>
-        <button class="btn btn-primary" id="add-btn" onclick="addExpense()">Add expense</button>
+        <button class="sidebar-logout" onclick="logout()">Sign out</button>
+      </div>
+    </nav>
+
+    <!-- Main panel -->
+    <div class="main-panel">
+      <div class="panel-topbar">
+        <h2 id="panel-title">Dashboard</h2>
+        <div class="panel-topbar-right" id="panel-date"></div>
       </div>
 
-      <div class="card">
-        <div class="card-title">Scan receipt</div>
-        <div class="upload-zone" id="upload-zone">
-          <input type="file" id="receipt-file" accept=".jpg,.jpeg,.png" onchange="previewFile(this)">
-          <div class="upload-icon">
-            <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <div class="panel-content">
+
+        <!-- ── OVERVIEW SECTION ───────────────── -->
+        <div class="section active" id="section-overview">
+          <div class="stats-row">
+            <div class="stat-card">
+              <div class="stat-label">Total spent</div>
+              <div class="stat-value" id="stat-total">&mdash;</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Expenses logged</div>
+              <div class="stat-value" id="stat-count">&mdash;</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Top category</div>
+              <div class="stat-value green" id="stat-top">&mdash;</div>
+            </div>
           </div>
-          <div class="upload-text">
-            <strong>Choose a receipt photo</strong><br>JPG or PNG — AI extracts items automatically
-          </div>
-        </div>
-        <div class="file-preview" id="file-preview"></div>
-        <button class="btn btn-green" id="upload-btn" onclick="uploadReceipt()">Scan with AI</button>
-        <div class="receipt-result" id="receipt-result">
-          <div class="receipt-result-title">Items extracted</div>
-          <div id="receipt-items"></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- ROW 2: Ask AI + Breakdown -->
-    <div class="grid-2">
-
-      <div class="card">
-        <div class="card-title">Ask AI</div>
-        <div class="ask-input-row">
-          <input type="text" id="ask-input" placeholder="How much did I spend on food?" onkeydown="if(event.key==='Enter')askAI()">
-          <button class="btn btn-primary" id="ask-btn" onclick="askAI()" style="width:auto;padding:9px 18px">Ask</button>
-        </div>
-        <div class="ai-answer" id="ai-answer">
-          <div class="ai-answer-label">AI Response</div>
-          <div id="ai-answer-text"></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">Spending breakdown</div>
-        <div class="breakdown-list" id="breakdown-list">
-          <div class="empty-state" style="padding:16px">
-            <div>Add expenses to see breakdown</div>
+          <div class="card">
+            <div class="card-title">Spending breakdown</div>
+            <div class="breakdown-list" id="breakdown-list">
+              <div class="empty-state" style="padding:16px">Add expenses to see breakdown</div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- AI SUMMARY -->
-    <div class="card" style="margin-bottom:16px">
-      <div class="table-header">
-        <div class="card-title" style="margin:0">AI spending summary</div>
-        <button class="btn btn-secondary" onclick="loadSummary()" style="width:auto;padding:6px 14px;font-size:13px">Refresh</button>
-      </div>
-      <div class="summary-text" id="summary-text">Click refresh to get an AI analysis of your spending.</div>
-    </div>
-
-    <!-- EXPENSES LIST -->
-    <div class="card expenses-card">
-      <div class="table-header">
-        <div class="card-title" style="margin:0">All expenses</div>
-        <button class="btn btn-secondary" onclick="loadExpenses()" style="width:auto;padding:6px 14px;font-size:13px">Refresh</button>
-      </div>
-      <div class="expense-list" id="expense-list">
-        <div class="empty-state">
-          <div>No expenses yet. Add your first one above.</div>
+        <!-- ── ADD EXPENSE SECTION ────────────── -->
+        <div class="section" id="section-add-expense">
+          <p class="section-desc">Log a new expense with amount, category, and an optional description.</p>
+          <div class="card" style="max-width:520px">
+            <div class="card-title">New expense</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Amount</label>
+                <input type="number" id="exp-amount" placeholder="0.00" min="0">
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select id="exp-category">
+                  <option value="">Select category</option>
+                  <option value="food">Food</option>
+                  <option value="travel">Travel</option>
+                  <option value="bills">Bills</option>
+                  <option value="shopping">Shopping</option>
+                  <option value="health">Health</option>
+                  <option value="entertainment">Entertainment</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <input type="text" id="exp-desc" placeholder="e.g. Lunch at cafe">
+            </div>
+            <button class="btn btn-primary" id="add-btn" onclick="addExpense()">Add expense</button>
+          </div>
         </div>
+
+        <!-- ── RECEIPT SECTION ────────────────── -->
+        <div class="section" id="section-receipt">
+          <p class="section-desc">Upload a receipt photo and let AI extract line items automatically.</p>
+          <div class="card" style="max-width:520px">
+            <div class="card-title">Scan receipt</div>
+            <div class="upload-zone" id="upload-zone">
+              <input type="file" id="receipt-file" accept=".jpg,.jpeg,.png" onchange="previewFile(this)">
+              <div class="upload-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <div class="upload-text">
+                <strong>Choose a receipt photo</strong><br>JPG or PNG — AI extracts items automatically
+              </div>
+            </div>
+            <div class="file-preview" id="file-preview"></div>
+            <button class="btn btn-green" id="upload-btn" onclick="uploadReceipt()">Scan with AI</button>
+            <div class="receipt-result" id="receipt-result">
+              <div class="receipt-result-title">Items extracted</div>
+              <div id="receipt-items"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ASK AI SECTION ─────────────────── -->
+        <div class="section" id="section-ask-ai">
+          <p class="section-desc">Ask natural language questions about your spending habits and history.</p>
+          <div class="card" style="max-width:640px">
+            <div class="card-title">Ask a question</div>
+            <div class="ask-input-row">
+              <input type="text" id="ask-input" placeholder="How much did I spend on food this month?" onkeydown="if(event.key==='Enter')askAI()">
+              <button class="btn btn-primary" id="ask-btn" onclick="askAI()" style="width:auto;padding:9px 20px">Ask</button>
+            </div>
+            <div class="ai-answer" id="ai-answer">
+              <div class="ai-answer-label">AI Response</div>
+              <div id="ai-answer-text"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SUMMARY SECTION ────────────────── -->
+        <div class="section" id="section-summary">
+          <p class="section-desc">AI-generated analysis of your spending patterns and recommendations.</p>
+          <div class="card" style="max-width:640px">
+            <div class="table-header">
+              <div class="card-title" style="margin:0">Spending summary</div>
+              <button class="btn btn-secondary" onclick="loadSummary()" style="width:auto;padding:6px 14px;font-size:13px">Refresh</button>
+            </div>
+            <div class="summary-text" id="summary-text">Click refresh to get an AI analysis of your spending.</div>
+          </div>
+        </div>
+
+        <!-- ── ALL EXPENSES SECTION ───────────── -->
+        <div class="section" id="section-expenses">
+          <div class="card">
+            <div class="table-header">
+              <div class="card-title" style="margin:0">All expenses</div>
+              <button class="btn btn-secondary" onclick="loadExpenses()" style="width:auto;padding:6px 14px;font-size:13px">Refresh</button>
+            </div>
+            <div class="expense-list" id="expense-list">
+              <div class="empty-state">No expenses yet. Add your first one from the sidebar.</div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -879,48 +1209,91 @@
 const API = 'https://ai-expense-tracker-fgcf.onrender.com';
 let token = localStorage.getItem('token') || '';
 let currentTab = 'login';
+let currentSection = 'overview';
+
+// ── NAV ──────────────────────────────────────────────
+
+const sectionTitles = {
+  'overview': 'Dashboard',
+  'add-expense': 'Add Expense',
+  'receipt': 'Scan Receipt',
+  'ask-ai': 'Ask AI',
+  'summary': 'AI Summary',
+  'expenses': 'All Expenses'
+};
+
+function navigateTo(section) {
+  currentSection = section;
+
+  // Update nav items
+  document.querySelectorAll('.nav-item').forEach(function(item) {
+    item.classList.toggle('active', item.dataset.nav === section);
+  });
+
+  // Update sections
+  document.querySelectorAll('.section').forEach(function(s) {
+    s.classList.remove('active');
+  });
+  document.getElementById('section-' + section).classList.add('active');
+
+  // Update topbar title
+  document.getElementById('panel-title').textContent = sectionTitles[section] || 'Dashboard';
+}
 
 // ── AUTH ──────────────────────────────────────────────
+
 function switchTab(tab) {
   currentTab = tab;
-  document.querySelectorAll('.auth-tab').forEach((t, i) => {
+  document.querySelectorAll('.auth-tab').forEach(function(t, i) {
     t.classList.toggle('active', (i === 0 && tab === 'login') || (i === 1 && tab === 'register'));
   });
-  document.getElementById('auth-btn').textContent = tab === 'login' ? 'Sign in' : 'Create account';
+  var btn = document.getElementById('auth-btn');
+  btn.textContent = tab === 'login' ? 'Sign in' : 'Create account';
+
+  var heading = document.querySelector('.auth-card-heading');
+  var sub = document.querySelector('.auth-card-sub');
+  if (tab === 'login') {
+    heading.textContent = 'Welcome back';
+    sub.textContent = 'Sign in to your account to continue.';
+  } else {
+    heading.textContent = 'Get started';
+    sub.textContent = 'Create an account to start tracking expenses.';
+  }
 }
 
 async function handleAuth() {
-  const email = document.getElementById('auth-email').value.trim();
-  const password = document.getElementById('auth-password').value;
+  var email = document.getElementById('auth-email').value.trim();
+  var password = document.getElementById('auth-password').value;
   if (!email || !password) return showToast('Fill in both fields', 'error');
 
-  const btn = document.getElementById('auth-btn');
+  var btn = document.getElementById('auth-btn');
   btn.disabled = true;
   btn.innerHTML = '<span class="loading"></span>' + (currentTab === 'login' ? 'Signing in...' : 'Creating account...');
 
   try {
     if (currentTab === 'register') {
-      const r = await fetch(`${API}/register`, {
+      var r = await fetch(API + '/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email: email, password: password })
       });
-      const d = await r.json();
+      var d = await r.json();
       if (!r.ok) { showToast(d.error || 'Registration failed', 'error'); return; }
       showToast('Account created. Signing in...', 'success');
     }
 
-    const r = await fetch(`${API}/login`, {
+    var r2 = await fetch(API + '/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email: email, password: password })
     });
-    const d = await r.json();
-    if (!r.ok) { showToast(d.error || 'Login failed', 'error'); return; }
+    var d2 = await r2.json();
+    if (!r2.ok) { showToast(d2.error || 'Login failed', 'error'); return; }
 
-    token = d.access_token;
+    token = d2.access_token;
     localStorage.setItem('token', token);
-    document.getElementById('user-badge').textContent = email.split('@')[0];
+    localStorage.setItem('userEmail', email);
+    setUserInfo(email);
     showDashboard();
   } catch(e) {
     showToast('Connection failed. Is the server up?', 'error');
@@ -930,33 +1303,53 @@ async function handleAuth() {
   }
 }
 
+function setUserInfo(email) {
+  var name = email.split('@')[0];
+  var initial = name.charAt(0).toUpperCase();
+  document.getElementById('sidebar-avatar').textContent = initial;
+  document.getElementById('sidebar-user-name').textContent = name;
+  document.getElementById('sidebar-user-email').textContent = email;
+}
+
 function logout() {
   token = '';
   localStorage.removeItem('token');
-  document.getElementById('auth-screen').style.display = 'flex';
+  localStorage.removeItem('userEmail');
+  document.getElementById('auth-screen').style.display = 'grid';
   document.getElementById('dashboard-screen').style.display = 'none';
   document.getElementById('auth-email').value = '';
   document.getElementById('auth-password').value = '';
 }
 
 // ── DASHBOARD ─────────────────────────────────────────
+
 function showDashboard() {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('dashboard-screen').style.display = 'block';
+  updateDate();
+  navigateTo('overview');
   loadExpenses();
   loadSummary();
 }
 
+function updateDate() {
+  var now = new Date();
+  document.getElementById('panel-date').textContent = now.toLocaleDateString('en-IN', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+  });
+}
+
 function authHeaders() {
-  return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+  return { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
 }
 
 // ── EXPENSES ──────────────────────────────────────────
+
 async function loadExpenses() {
   try {
-    const r = await fetch(`${API}/expenses`, { headers: authHeaders() });
+    var r = await fetch(API + '/expenses', { headers: authHeaders() });
     if (r.status === 401) { logout(); return; }
-    const data = await r.json();
+    var data = await r.json();
     renderExpenses(data);
     renderStats(data);
     renderBreakdown(data);
@@ -964,76 +1357,78 @@ async function loadExpenses() {
 }
 
 function renderExpenses(list) {
-  const el = document.getElementById('expense-list');
+  var el = document.getElementById('expense-list');
   if (!list.length) {
-    el.innerHTML = '<div class="empty-state"><div>No expenses yet. Add your first one above.</div></div>';
+    el.innerHTML = '<div class="empty-state">No expenses yet. Add your first one from the sidebar.</div>';
     return;
   }
-  el.innerHTML = list.slice().reverse().map(e => `
-    <div class="expense-item" id="exp-${e.id}">
-      <span class="expense-cat-badge">${e.category}</span>
-      <span class="expense-desc">${e.description || '\u2014'}</span>
-      <span class="expense-amount">${formatAmount(e.amount)}</span>
-      <span class="expense-date">${formatDate(e.date)}</span>
-      <button class="delete-btn" onclick="deleteExpense(${e.id})" title="Delete">
-        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
-      </button>
-    </div>
-  `).join('');
+  el.innerHTML = list.slice().reverse().map(function(e) {
+    return '<div class="expense-item" id="exp-' + e.id + '">'
+      + '<span class="expense-cat-badge">' + e.category + '</span>'
+      + '<span class="expense-desc">' + (e.description || '\u2014') + '</span>'
+      + '<span class="expense-amount">' + formatAmount(e.amount) + '</span>'
+      + '<span class="expense-date">' + formatDate(e.date) + '</span>'
+      + '<button class="delete-btn" onclick="deleteExpense(' + e.id + ')" title="Delete">'
+      + '<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>'
+      + '</button>'
+      + '</div>';
+  }).join('');
 }
 
 function renderStats(list) {
-  const total = list.reduce((s, e) => s + e.amount, 0);
+  var total = list.reduce(function(s, e) { return s + e.amount; }, 0);
   document.getElementById('stat-total').textContent = formatAmount(total);
   document.getElementById('stat-count').textContent = list.length;
 
-  const breakdown = {};
-  list.forEach(e => { breakdown[e.category] = (breakdown[e.category] || 0) + e.amount; });
-  const top = Object.entries(breakdown).sort((a,b) => b[1]-a[1])[0];
+  var breakdown = {};
+  list.forEach(function(e) { breakdown[e.category] = (breakdown[e.category] || 0) + e.amount; });
+  var entries = Object.entries(breakdown).sort(function(a,b) { return b[1] - a[1]; });
+  var top = entries[0];
   document.getElementById('stat-top').textContent = top ? top[0] : '\u2014';
 }
 
 function renderBreakdown(list) {
-  const el = document.getElementById('breakdown-list');
+  var el = document.getElementById('breakdown-list');
   if (!list.length) {
     el.innerHTML = '<div class="empty-state" style="padding:16px">Add expenses to see breakdown</div>';
     return;
   }
-  const breakdown = {};
-  list.forEach(e => { breakdown[e.category] = (breakdown[e.category] || 0) + e.amount; });
-  const max = Math.max(...Object.values(breakdown));
+  var breakdown = {};
+  list.forEach(function(e) { breakdown[e.category] = (breakdown[e.category] || 0) + e.amount; });
+  var max = Math.max.apply(null, Object.values(breakdown));
   el.innerHTML = Object.entries(breakdown)
-    .sort((a,b) => b[1]-a[1])
-    .map(([cat, amt]) => `
-      <div class="breakdown-item">
-        <span class="breakdown-label">${cat}</span>
-        <div class="breakdown-bar-wrap">
-          <div class="breakdown-bar" style="width:${(amt/max*100).toFixed(1)}%"></div>
-        </div>
-        <span class="breakdown-amount">${formatAmount(amt)}</span>
-      </div>
-    `).join('');
+    .sort(function(a,b) { return b[1] - a[1]; })
+    .map(function(entry) {
+      var cat = entry[0], amt = entry[1];
+      return '<div class="breakdown-item">'
+        + '<span class="breakdown-label">' + cat + '</span>'
+        + '<div class="breakdown-bar-wrap">'
+        + '<div class="breakdown-bar" style="width:' + (amt/max*100).toFixed(1) + '%"></div>'
+        + '</div>'
+        + '<span class="breakdown-amount">' + formatAmount(amt) + '</span>'
+        + '</div>';
+    }).join('');
 }
 
 async function addExpense() {
-  const amount = parseFloat(document.getElementById('exp-amount').value);
-  const category = document.getElementById('exp-category').value;
-  const description = document.getElementById('exp-desc').value.trim();
+  var amount = parseFloat(document.getElementById('exp-amount').value);
+  var category = document.getElementById('exp-category').value;
+  var description = document.getElementById('exp-desc').value.trim();
 
   if (!amount || amount <= 0) return showToast('Enter a valid amount', 'error');
   if (!category) return showToast('Select a category', 'error');
 
-  const btn = document.getElementById('add-btn');
+  var btn = document.getElementById('add-btn');
   btn.disabled = true;
   btn.innerHTML = '<span class="loading"></span>Adding...';
 
   try {
-    const r = await fetch(`${API}/expenses`, {
+    var r = await fetch(API + '/expenses', {
       method: 'POST',
       headers: authHeaders(),
-      body: JSON.stringify({ amount, category, description })
+      body: JSON.stringify({ amount: amount, category: category, description: description })
     });
-    const d = await r.json();
+    var d = await r.json();
     if (!r.ok) { showToast(d.error || 'Failed to add', 'error'); return; }
 
     document.getElementById('exp-amount').value = '';
@@ -1050,17 +1445,19 @@ async function addExpense() {
 
 async function deleteExpense(id) {
   try {
-    const r = await fetch(`${API}/expenses/${id}`, { method: 'DELETE', headers: authHeaders() });
+    var r = await fetch(API + '/expenses/' + id, { method: 'DELETE', headers: authHeaders() });
     if (!r.ok) { showToast('Delete failed', 'error'); return; }
-    document.getElementById(`exp-${id}`)?.remove();
+    var el = document.getElementById('exp-' + id);
+    if (el) el.remove();
     showToast('Expense deleted', 'info');
     loadExpenses();
   } catch(e) { showToast('Delete failed', 'error'); }
 }
 
 // ── RECEIPT ───────────────────────────────────────────
+
 function previewFile(input) {
-  const preview = document.getElementById('file-preview');
+  var preview = document.getElementById('file-preview');
   if (input.files[0]) {
     preview.textContent = input.files[0].name + ' selected';
     preview.style.display = 'block';
@@ -1068,31 +1465,31 @@ function previewFile(input) {
 }
 
 async function uploadReceipt() {
-  const file = document.getElementById('receipt-file').files[0];
+  var file = document.getElementById('receipt-file').files[0];
   if (!file) return showToast('Select a receipt image first', 'error');
 
-  const btn = document.getElementById('upload-btn');
+  var btn = document.getElementById('upload-btn');
   btn.disabled = true;
   btn.innerHTML = '<span class="loading"></span>Scanning...';
 
-  const form = new FormData();
+  var form = new FormData();
   form.append('receipt', file);
 
   try {
-    const r = await fetch(`${API}/upload-receipt`, {
+    var r = await fetch(API + '/upload-receipt', {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}` },
+      headers: { 'Authorization': 'Bearer ' + token },
       body: form
     });
-    const d = await r.json();
+    var d = await r.json();
     if (!r.ok) { showToast(d.error || 'Upload failed', 'error'); return; }
 
-    const result = document.getElementById('receipt-result');
-    const items = document.getElementById('receipt-items');
-    items.innerHTML = d.data.items.map(i =>
-      `<div class="receipt-item-row"><span>${i.name}</span><span>${formatAmount(i.amount)}</span></div>`
-    ).join('') +
-    `<div class="receipt-item-row"><span>Total</span><span>${formatAmount(d.data.total)}</span></div>`;
+    var result = document.getElementById('receipt-result');
+    var items = document.getElementById('receipt-items');
+    items.innerHTML = d.data.items.map(function(i) {
+      return '<div class="receipt-item-row"><span>' + i.name + '</span><span>' + formatAmount(i.amount) + '</span></div>';
+    }).join('')
+    + '<div class="receipt-item-row"><span>Total</span><span>' + formatAmount(d.data.total) + '</span></div>';
     result.classList.add('visible');
 
     showToast(d.expenses_created + ' expense(s) saved from receipt', 'success');
@@ -1105,26 +1502,27 @@ async function uploadReceipt() {
 }
 
 // ── AI ASK ────────────────────────────────────────────
+
 async function askAI() {
-  const question = document.getElementById('ask-input').value.trim();
+  var question = document.getElementById('ask-input').value.trim();
   if (!question) return showToast('Type a question first', 'error');
 
-  const btn = document.getElementById('ask-btn');
+  var btn = document.getElementById('ask-btn');
   btn.disabled = true;
   btn.innerHTML = '<span class="loading"></span>';
 
-  const answerEl = document.getElementById('ai-answer');
-  const textEl = document.getElementById('ai-answer-text');
+  var answerEl = document.getElementById('ai-answer');
+  var textEl = document.getElementById('ai-answer-text');
   answerEl.classList.add('visible');
   textEl.textContent = 'Thinking...';
 
   try {
-    const r = await fetch(`${API}/ask`, {
+    var r = await fetch(API + '/ask', {
       method: 'POST',
       headers: authHeaders(),
-      body: JSON.stringify({ question })
+      body: JSON.stringify({ question: question })
     });
-    const d = await r.json();
+    var d = await r.json();
     if (!r.ok) { textEl.textContent = d.error || 'Could not answer'; return; }
     textEl.textContent = d.answer;
   } catch(e) { textEl.textContent = 'Request failed'; }
@@ -1135,18 +1533,20 @@ async function askAI() {
 }
 
 // ── SUMMARY ───────────────────────────────────────────
+
 async function loadSummary() {
-  const el = document.getElementById('summary-text');
+  var el = document.getElementById('summary-text');
   el.textContent = 'Loading AI summary...';
   try {
-    const r = await fetch(`${API}/summary`, { headers: authHeaders() });
-    const d = await r.json();
+    var r = await fetch(API + '/summary', { headers: authHeaders() });
+    var d = await r.json();
     if (!r.ok) { el.textContent = d.error || 'No summary available'; return; }
     el.textContent = d.summary;
   } catch(e) { el.textContent = 'Could not load summary'; }
 }
 
 // ── UTILS ─────────────────────────────────────────────
+
 function formatAmount(n) {
   return '\u20B9' + parseFloat(n).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 }
@@ -1157,15 +1557,17 @@ function formatDate(str) {
 
 function showToast(msg, type) {
   type = type || 'info';
-  const t = document.getElementById('toast');
+  var t = document.getElementById('toast');
   t.textContent = msg;
   t.className = 'toast ' + type + ' show';
   setTimeout(function() { t.classList.remove('show'); }, 3000);
 }
 
 // ── INIT ──────────────────────────────────────────────
+
 if (token) {
-  document.getElementById('user-badge').textContent = 'user';
+  var savedEmail = localStorage.getItem('userEmail') || 'user@email.com';
+  setUserInfo(savedEmail);
   showDashboard();
 }
 </script>

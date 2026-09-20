@@ -3,6 +3,8 @@ from flask import current_app
 import base64
 import json
 
+GROQ_MODEL = "qwen/qwen3.8-27b"
+
 
 def clean_json_response(raw):
       
@@ -56,7 +58,7 @@ def extract_receipt_data(image_path):
         image_data = base64.b64encode(f.read()).decode("utf-8")
 
     response = client.chat.completions.create(
-        model="meta-llama/llama-4-scout-17b-16e-instruct",
+        model=GROQ_MODEL,
         messages=[
             {
                 "role": "user",

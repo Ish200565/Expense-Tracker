@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 import base64
 import json
-from app.services.groq_services import clean_json_response, validate_receipt_data
+from app.services.groq_services import GROQ_MODEL, clean_json_response, validate_receipt_data
 from app.services.embedding_service import get_embedding
 
 load_dotenv()
@@ -15,7 +15,7 @@ with open("sample.jpg", "rb") as f:
     image_data = base64.b64encode(f.read()).decode("utf-8")
 
 response = client.chat.completions.create(
-    model="meta-llama/llama-4-scout-17b-16e-instruct",
+    model=GROQ_MODEL,
     messages=[
         {
             "role": "user",

@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.extensions import db
 from app.models.expense import Expense
-from app.services.groq_services import get_groq_client
+from app.services.groq_services import GROQ_MODEL, get_groq_client
 
 insights = Blueprint("insights", __name__)
 
@@ -24,7 +24,7 @@ def get_summary():
 
     client = get_groq_client()
     response = client.chat.completions.create(
-        model="meta-llama/llama-4-scout-17b-16e-instruct",
+        model=GROQ_MODEL,
         messages=[
             {
                 "role": "user",
@@ -82,7 +82,7 @@ def ask_question():
 
     client = get_groq_client()
     response = client.chat.completions.create(
-        model="meta-llama/llama-4-scout-17b-16e-instruct",
+        model=GROQ_MODEL,
         messages=[
             {
                 "role": "user",

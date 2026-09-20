@@ -521,6 +521,28 @@
     letter-spacing: -0.01em;
   }
 
+  .mobile-menu-btn {
+    display: none;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    color: var(--text-secondary);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-menu-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
   .panel-topbar-right {
     font-size: 12px;
     color: var(--text-muted);
@@ -1031,12 +1053,94 @@
   }
 
   @media (max-width: 1024px) {
-    .sidebar { display: none; }
+    .sidebar {
+      display: flex;
+      transform: translateX(-100%);
+      transition: transform 0.2s ease;
+      box-shadow: var(--shadow-md);
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .mobile-menu-btn { display: flex; }
+
+    .sidebar-backdrop {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(26, 26, 26, 0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 15;
+    }
+
+    .sidebar-backdrop.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     .main-panel { margin-left: 0; }
     .stats-row { grid-template-columns: 1fr; }
     .grid-2 { grid-template-columns: 1fr; }
     .form-row { grid-template-columns: 1fr; }
     .panel-content { padding: 20px 16px; }
+  }
+
+  @media (max-width: 480px) {
+    .panel-topbar {
+      height: auto;
+      min-height: 54px;
+      padding: 12px 16px;
+      gap: 12px;
+    }
+
+    .panel-topbar h2,
+    .panel-topbar-right {
+      min-width: 0;
+    }
+
+    .panel-topbar h2 {
+      font-size: 15px;
+    }
+
+    .panel-topbar-right {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .panel-content {
+      padding: 16px 12px 24px;
+    }
+
+    .stats-row {
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat-card,
+    .card {
+      padding: 16px;
+    }
+
+    .stat-value {
+      font-size: 21px;
+      overflow-wrap: anywhere;
+    }
+
+    .breakdown-label {
+      width: 72px;
+    }
+
+    .breakdown-amount {
+      width: 62px;
+    }
+
+    .section-desc {
+      margin-bottom: 14px;
+    }
   }
 </style>
 </head>
@@ -1196,9 +1300,14 @@
       </div>
     </nav>
 
+    <div class="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
+
     <!-- Main panel -->
     <div class="main-panel">
       <div class="panel-topbar">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()" aria-label="Open navigation menu" title="Open navigation menu">
+          <svg viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </button>
         <h2 id="panel-title">Dashboard</h2>
         <div class="panel-topbar-right" id="panel-date"></div>
       </div>
@@ -1354,6 +1463,7 @@ const sectionTitles = {
 
 function navigateTo(section) {
   currentSection = section;
+  toggleSidebar(false);
 
   // Update nav items
   document.querySelectorAll('.nav-item').forEach(function(item) {
@@ -1368,6 +1478,18 @@ function navigateTo(section) {
 
   // Update topbar title
   document.getElementById('panel-title').textContent = sectionTitles[section] || 'Dashboard';
+}
+
+function toggleSidebar(forceOpen) {
+  var sidebar = document.querySelector('.sidebar');
+  var backdrop = document.querySelector('.sidebar-backdrop');
+  if (!sidebar || !backdrop) return;
+
+  var shouldOpen = typeof forceOpen === 'boolean'
+    ? forceOpen
+    : !sidebar.classList.contains('open');
+  sidebar.classList.toggle('open', shouldOpen);
+  backdrop.classList.toggle('visible', shouldOpen);
 }
 
 // ── AUTH ──────────────────────────────────────────────

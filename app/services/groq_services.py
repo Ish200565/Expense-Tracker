@@ -43,8 +43,7 @@ def validate_receipt_data(data):
         if "total" not in data:
             data["total"] = sum(item["amount"] for item in data["items"])
 
-        if "currency" not in data:
-            data["currency"] = "USD"
+        data["currency"] = "INR"
 
         return data
 
@@ -78,7 +77,7 @@ Return ONLY a JSON object in this exact format, nothing else, no extra text:
         {"name": "item name", "amount": 0.00}
     ],
     "total": 0.00,
-    "currency": "currency code"
+    "currency": "INR"
 }"""
                     }
                 ]

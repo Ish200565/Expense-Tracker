@@ -17,6 +17,7 @@ def get_summary():
     if not expenses:
         return jsonify({"error": "no expenses found"}), 404
 
+    total_amount = sum(expense.amount for expense in expenses)
     expense_text = "\n".join([
         f"{e.category}: {e.amount} on {e.date.strftime('%Y-%m-%d')}"
         for e in expenses
@@ -32,7 +33,8 @@ def get_summary():
 Analyse these expenses and give a brief friendly summary in 3-4 sentences.
 Mention total spending, biggest category, and one money saving tip.
 
-Expenses:
+    Expenses:
+    All amounts are in Indian rupees (INR). The exact total calculated by the application is INR {total_amount:.2f}; use this value and do not convert it to another currency.
 {expense_text}"""
             }
         ]
@@ -52,7 +54,9 @@ def ask_question():
     if not data:
         return jsonify({"error": "request body must be JSON"}), 400
 
-    expense_count = Expense.query.filter_by(user_id=user_id).count()
+    expenses = Expense.query.filter_by(user_id=user_id).all()
+    expense_count = len(expenses)
+    total_amount = sum(expense.amount for expense in expenses)
     if expense_count == 0:
         return jsonify({"error": "no expenses found. add some expenses first"}), 404
 
@@ -61,24 +65,37 @@ def ask_question():
 
     question = data["question"]
 
-    if any(w in question.lower() for w in ["all", "total", "every", "breakdown", "summary"]):
-        n_results = 15
-    elif any(w in question.lower() for w in ["compare", "vs", "difference"]):
+    question_lower = question.lower()
+    needs_complete_ledger = any(w in question_lower for w in [
+        "all", "total", "every", "breakdown", "summary", "amount", "bill", "spend", "spent", "cost", "how much", "current"
+    ])
+
+    if needs_complete_ledger:
+        context = "\n".join([
+            f"{expense.category}: {expense.amount} on {expense.date.strftime('%Y-%m-%d')}"
+            for expense in expenses
+        ])
+        based_on_expenses = expense_count
+    elif any(w in question_lower for w in ["compare", "vs", "difference"]):
         n_results = 10
+        based_on_expenses = n_results
     else:
         n_results = 5
+        based_on_expenses = n_results
 
-    try:
-        from app.services.rag_service import search_expenses
-        results = search_expenses(question, user_id=user_id, n_results=n_results)
+    if not needs_complete_ledger:
+        try:
+            from app.services.rag_service import search_expenses
+            results = search_expenses(question, user_id=user_id, n_results=n_results)
 
-        if not results["documents"][0]:
-            return jsonify({"error": "no relevant expenses found. add more expenses first"}), 404
+            if not results["documents"][0]:
+                return jsonify({"error": "no relevant expenses found. add more expenses first"}), 404
 
-        context = "\n".join(results["documents"][0])
+            context = "\n".join(results["documents"][0])
+            based_on_expenses = len(results["documents"][0])
 
-    except Exception as e:
-        return jsonify({"error": "search failed", "details": str(e)}), 500
+        except Exception as e:
+            return jsonify({"error": "search failed", "details": str(e)}), 500
 
     client = get_groq_client()
     response = client.chat.completions.create(
@@ -90,8 +107,9 @@ def ask_question():
 Answer this question based on the expense data provided.
 Rules:
 - Always add up amounts before answering totals
-- If data seems incomplete say so
-- Use the currency from the data
+- All amounts are in Indian rupees (INR). Never use dollars or convert the amounts.
+- For total, bill, amount, spending, or "how much" questions, use every expense in the data provided.
+- The exact application-calculated total for the complete ledger is INR {total_amount:.2f}. Use this exact total whenever the question asks for total spending or the total amount.
 - Be specific — mention exact amounts and categories
 - If asked to compare, calculate each category separately first
 - Keep answer under 3 sentences
@@ -107,5 +125,5 @@ Question: {question}"""
     return jsonify({
         "question": question,
         "answer": response.choices[0].message.content,
-        "based_on_expenses": len(results["documents"][0])
+        "based_on_expenses": based_on_expenses
     }), 200

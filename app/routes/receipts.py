@@ -1,5 +1,6 @@
 import os
-from flask import Blueprint, request, jsonify
+from collections import Counter
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from app.extensions import db
 from app.models.expense import Expense
@@ -41,6 +42,20 @@ def upload_receipt():
     try:
         receipt_data = extract_receipt_data(file_path)
 
+        def item_key(item):
+            name = str(item["name"]).strip().casefold()
+            amount = round(float(item["amount"]), 2)
+            return name, amount
+
+        receipt_items = Counter(item_key(item) for item in receipt_data["items"])
+        existing_items = Counter(
+            item_key({"name": expense.category, "amount": expense.amount})
+            for expense in Expense.query.filter_by(user_id=user_id).all()
+            if expense.description and expense.description.startswith("Auto:")
+        )
+        if all(existing_items[key] >= count for key, count in receipt_items.items()):
+            return jsonify({"error": "this receipt has already been processed"}), 409
+
         saved_expenses = []
         for item in receipt_data["items"]:
             expense = Expense(
@@ -54,12 +69,10 @@ def upload_receipt():
 
         db.session.commit()
 
-        try:
-            from app.services.rag_service import store_expense
-            for expense in saved_expenses:
-                store_expense(expense)         
-        except Exception as e:
-            print(f"ChromaDB store failed: {e}")
+        from app.services.background_tasks import queue_expense_index
+        app = current_app._get_current_object()
+        for expense in saved_expenses:
+            queue_expense_index(app, expense.id)
 
     except Exception as e:
         db.session.rollback()

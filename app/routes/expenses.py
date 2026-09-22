@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.extensions import db
@@ -37,6 +37,16 @@ def add_expense():
     if not category.strip():
         return jsonify({"error": "category cannot be empty"}), 400
 
+    category = category.strip()
+    description = description.strip() if isinstance(description, str) else ""
+    duplicate = Expense.query.filter_by(
+        user_id=user_id,
+        category=category,
+        description=description
+    ).filter(Expense.amount == amount).first()
+    if duplicate:
+        return jsonify({"error": "duplicate expense already exists"}), 409
+
     new_expense = Expense(
         amount=amount,
         category=category,
@@ -46,11 +56,8 @@ def add_expense():
     db.session.add(new_expense)
     db.session.commit()
 
-    try:
-        from app.services.rag_service import store_expense
-        store_expense(new_expense)
-    except Exception as e:
-        print(f"ChromaDB store failed: {e}")
+    from app.services.background_tasks import queue_expense_index
+    queue_expense_index(current_app._get_current_object(), new_expense.id)
 
     return jsonify({"message": "expense added", "expense": new_expense.to_dict()}), 201
 

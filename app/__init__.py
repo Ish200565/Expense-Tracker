@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
+from sqlalchemy import text
 from .extensions import db, migrate, jwt
 from .config import Config
 
@@ -7,6 +8,19 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)           
     CORS(app)
+
+    @app.get("/")
+    def home():
+        return jsonify({"service": "AI Expense Tracker API", "status": "ok"}), 200
+
+    @app.get("/health")
+    def health():
+        try:
+            db.session.execute(text("SELECT 1"))
+            return jsonify({"status": "healthy", "database": "ok"}), 200
+        except Exception:
+            db.session.rollback()
+            return jsonify({"status": "unhealthy", "database": "unavailable"}), 503
 
     db.init_app(app)
     migrate.init_app(app, db)

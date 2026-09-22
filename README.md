@@ -4,6 +4,8 @@ A REST API for tracking personal expenses with JWT authentication and AI-powered
 **Live demo:** `https://ish200565.github.io/Expense-Tracker`
 **Live API:** `https://ai-expense-tracker-fgcf.onrender.com`
 
+Service checks: `GET /` returns API status and `GET /health` checks the database connection.
+
 ## What it does
 The AI Expense Tracker is a personal finance management API that allows users to register, log in securely using JWT authentication, and keep track of their expenses. Users can add, modify, delete, and categorize their spending, as well as retrieve expense summaries to gain insights into their financial habits.
 
@@ -112,6 +114,8 @@ The AI Expense Tracker is a personal finance management API that allows users to
 
 ## Deployment
 Deployed on Render with PostgreSQL. Auto-deploys on every push to main branch.
+
+Set `SQLALCHEMY_DATABASE_URI`, `JWT_SECRET_KEY`, and `GROQ_API_KEY` in the Render service environment. Configure Render's health check path as `/health` so database connectivity is monitored after deploys.
 
 ## Note on free tier
 

@@ -1616,8 +1616,8 @@ function renderExpenses(list) {
   }
   el.innerHTML = list.slice().reverse().map(function(e) {
     return '<div class="expense-item" id="exp-' + e.id + '">'
-      + '<span class="expense-cat-badge">' + e.category + '</span>'
-      + '<span class="expense-desc">' + (e.description || '\u2014') + '</span>'
+      + '<span class="expense-cat-badge">' + escapeHtml(e.category) + '</span>'
+      + '<span class="expense-desc">' + escapeHtml(e.description || '\u2014') + '</span>'
       + '<span class="expense-amount">' + formatAmount(e.amount) + '</span>'
       + '<span class="expense-date">' + formatDate(e.date) + '</span>'
       + '<button class="delete-btn" onclick="deleteExpense(' + e.id + ')" title="Delete">'
@@ -1653,7 +1653,7 @@ function renderBreakdown(list) {
     .map(function(entry) {
       var cat = entry[0], amt = entry[1];
       return '<div class="breakdown-item">'
-        + '<span class="breakdown-label">' + cat + '</span>'
+        + '<span class="breakdown-label">' + escapeHtml(cat) + '</span>'
         + '<div class="breakdown-bar-wrap">'
         + '<div class="breakdown-bar" style="width:' + (amt/max*100).toFixed(1) + '%"></div>'
         + '</div>'
@@ -1739,7 +1739,7 @@ async function uploadReceipt() {
     var result = document.getElementById('receipt-result');
     var items = document.getElementById('receipt-items');
     items.innerHTML = d.data.items.map(function(i) {
-      return '<div class="receipt-item-row"><span>' + i.name + '</span><span>' + formatAmount(i.amount) + '</span></div>';
+      return '<div class="receipt-item-row"><span>' + escapeHtml(i.name) + '</span><span>' + formatAmount(i.amount) + '</span></div>';
     }).join('')
     + '<div class="receipt-item-row"><span>Total</span><span>' + formatAmount(d.data.total) + '</span></div>';
     result.classList.add('visible');
@@ -1798,6 +1798,15 @@ async function loadSummary() {
 }
 
 // ── UTILS ─────────────────────────────────────────────
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
 
 function formatAmount(n) {
   return '\u20B9' + parseFloat(n).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });

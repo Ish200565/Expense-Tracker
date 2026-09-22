@@ -115,7 +115,7 @@ The AI Expense Tracker is a personal finance management API that allows users to
 ## Deployment
 Deployed on Render with PostgreSQL. Auto-deploys on every push to main branch.
 
-Set `SQLALCHEMY_DATABASE_URI`, `JWT_SECRET_KEY`, and `GROQ_API_KEY` in the Render service environment. Configure Render's health check path as `/health` so database connectivity is monitored after deploys.
+Set `SQLALCHEMY_DATABASE_URI`, `JWT_SECRET_KEY`, `GROQ_API_KEY`, and `CORS_ORIGINS` in the Render service environment. Set `CORS_ORIGINS` to the exact frontend origin, such as `https://ish200565.github.io`, and separate multiple origins with commas. Configure Render's health check path as `/health` so database connectivity is monitored after deploys.
 
 ## Note on free tier
 

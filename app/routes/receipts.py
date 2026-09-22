@@ -1,7 +1,9 @@
 import os
+import uuid
 from collections import Counter
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from werkzeug.utils import secure_filename
 from app.extensions import db
 from app.models.expense import Expense
 from app.services.groq_services import extract_receipt_data
@@ -33,10 +35,11 @@ def upload_receipt():
     if file.filename == "":
         return jsonify({"error": "no file selected"}), 400
 
-    if not allowed_file(file.filename):
+    safe_filename = secure_filename(file.filename)
+    if not safe_filename or not allowed_file(safe_filename):
         return jsonify({"error": "only jpg and png files allowed"}), 400
 
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename or "receipt.jpg")
+    file_path = os.path.join(UPLOAD_FOLDER, f"{uuid.uuid4().hex}_{safe_filename}")
     file.save(file_path)
 
     try:

@@ -26,6 +26,7 @@ def get_summary():
     client = get_groq_client()
     response = client.chat.completions.create(
         model=GROQ_MODEL,
+        temperature=0,
         messages=[
             {
                 "role": "user",
@@ -66,6 +67,26 @@ def ask_question():
     question = data["question"]
 
     question_lower = question.lower()
+    numeric_question = any(w in question_lower for w in [
+        "total", "how much", "spent", "spend", "amount", "cost", "bill"
+    ])
+    matched_categories = [
+        category for category in {expense.category for expense in expenses}
+        if category.lower() in question_lower
+    ]
+    if numeric_question:
+        selected_expenses = [
+            expense for expense in expenses
+            if not matched_categories or expense.category in matched_categories
+        ]
+        selected_total = sum(expense.amount for expense in selected_expenses)
+        scope = " and ".join(matched_categories) if matched_categories else "all categories"
+        return jsonify({
+            "question": question,
+            "answer": f"The total spent on {scope} is INR {selected_total:.2f}.",
+            "based_on_expenses": len(selected_expenses)
+        }), 200
+
     needs_complete_ledger = any(w in question_lower for w in [
         "all", "total", "every", "breakdown", "summary", "amount", "bill", "spend", "spent", "cost", "how much", "current"
     ])
@@ -100,6 +121,7 @@ def ask_question():
     client = get_groq_client()
     response = client.chat.completions.create(
         model=GROQ_MODEL,
+        temperature=0,
         messages=[
             {
                 "role": "user",
